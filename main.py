@@ -25,11 +25,39 @@ def download_image(image_url, title, directory='images'):
 def scrape_book_data(link):
     try:
         response = requests.get(link)
-        response.raise_for_status()  # Vérifier si la requête a réussi
+        response.raise_for_status()  
         soup = BeautifulSoup(response.text, "html.parser")
         title = soup.find('h1').text.strip()
         category = soup.find('ul', {'class': 'breadcrumb'}).find_all('a')[-1].text.strip()
-        upc, price_including_tax, price_excluding_tax, number_available, review_rating, product_description = [row.find('td').text.strip() for row in soup.find('table', {'class': 'table table-striped'}).find_all('tr')[:-1]]
+        rows = soup.find('table', {'class': 'table table-striped'}).find_all('tr')
+        upc = rows[0].find('td').text.strip()
+        price_including_tax = rows[3].find('td').text.replace('Â', '')
+        price_excluding_tax = rows[2].find('td').text.replace('Â', '')
+        
+        # Correction pour récupérer le nombre de livres disponibles
+        number_available_raw = rows[5].find('td').text.strip()  
+        number_available_match = re.search(r'\d+', number_available_raw)
+        if number_available_match:
+            number_available = number_available_match.group()
+        else:
+            number_available = "N/A"  
+        review_mapping = {
+            "One": 1,
+            "Two": 2,
+            "Three": 3,
+            "Four": 4,
+            "Five": 5
+        }
+        review_p = soup.find('p', class_='star-rating')
+        if review_p:
+            review_rating_text = review_p['class'][1] 
+            review_rating = review_mapping.get(review_rating_text, 0)  
+        else:
+            review_rating = 0  
+        
+        product_description = soup.find('meta', attrs={'name': 'description'})['content']
+        product_description = re.sub(r'[^a-zA-Z0-9\s.,]', '', product_description)
+        
         image_url = soup.find('div', {'class': 'item'}).find('img')['src'].replace('../../', "http://books.toscrape.com/")
         image_filename = download_image(image_url, title)
         if image_filename:
@@ -39,6 +67,8 @@ def scrape_book_data(link):
     except requests.exceptions.RequestException as e:
         print(f"Une erreur est survenue lors du scraping des données: {e}")
         return None
+
+
 
 def main():
     create_directory('images')

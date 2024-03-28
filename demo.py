@@ -12,7 +12,6 @@ from bs4 import BeautifulSoup
 import csv
 
 
-    
 def create_directory(directory):
     if not os.path.exists(directory):
         os.makedirs(directory)
@@ -22,7 +21,7 @@ def download_image(image_url, title, directory='images'):
     image_filename = f"{directory}/{clean_title}.jpg"
     try:
         img_response = requests.get(image_url)
-        img_response.raise_for_status()  # Vérifier si la requête a réussi
+        img_response.raise_for_status()  
         with open(image_filename, 'wb') as img_file:
             img_file.write(img_response.content)
         return image_filename
@@ -30,12 +29,10 @@ def download_image(image_url, title, directory='images'):
         print(f"Une erreur est survenue lors du téléchargement de l'image: {e}")
         return None
 
-
-
 def scrape_book_data(link):
     try:
         response = requests.get(link)
-        response.raise_for_status()  # Vérifier si la requête a réussi
+        response.raise_for_status()  
         soup = BeautifulSoup(response.text, "html.parser")
         title = soup.find('h1').text.strip()
         category = soup.find('ul', {'class': 'breadcrumb'}).find_all('a')[-1].text.strip()
@@ -43,9 +40,14 @@ def scrape_book_data(link):
         upc = rows[0].find('td').text.strip()
         price_including_tax = rows[3].find('td').text.replace('Â', '')
         price_excluding_tax = rows[2].find('td').text.replace('Â', '')
-        number_available = rows[5].find('td').text.replace('()', '')
         
-        # Convertir la notation en étoiles en nombre entier
+        # Correction pour récupérer le nombre de livres disponibles
+        number_available_raw = rows[5].find('td').text.strip()  
+        number_available_match = re.search(r'\d+', number_available_raw)
+        if number_available_match:
+            number_available = number_available_match.group()
+        else:
+            number_available = "N/A"  
         review_mapping = {
             "One": 1,
             "Two": 2,
@@ -55,12 +57,11 @@ def scrape_book_data(link):
         }
         review_p = soup.find('p', class_='star-rating')
         if review_p:
-            review_rating_text = review_p['class'][1]  # La classe contient le texte de la notation
-            review_rating = review_mapping.get(review_rating_text, 0)  # Par défaut, 0 si la notation n'est pas trouvée
+            review_rating_text = review_p['class'][1] 
+            review_rating = review_mapping.get(review_rating_text, 0)  
         else:
-            review_rating = 0  # Par défaut, 0 si la balise p n'est pas trouvée
+            review_rating = 0  
         
-        # Filtrer les caractères spéciaux dans la description du produit
         product_description = soup.find('meta', attrs={'name': 'description'})['content']
         product_description = re.sub(r'[^a-zA-Z0-9\s.,]', '', product_description)
         
@@ -75,7 +76,6 @@ def scrape_book_data(link):
         return None
 
 
-
 def main():
     create_directory('images')
     while True:
@@ -85,18 +85,15 @@ def main():
                              'price_excluding_tax', 'number_available', 'product_description', 'category',
                              'review_rating', 'image_url', 'image_path'])
 
-            # Demander à l'utilisateur de saisir le numéro de la page à scraper
-            page_number = int(input("Entrez le numéro de la page à scraper : "))  # Convertir une chaîne en un nombre entier
-
-            # Construire l'URL de la page spécifiée par l'utilisateur
+            page_number = int(input("Entrez le numéro de la page à scraper : "))  
             url = f'https://books.toscrape.com/catalogue/page-{page_number}.html'
 
             try:
                 response = requests.get(url)
-                response.raise_for_status()  # Vérifier si la requête a réussi
+                response.raise_for_status()  
                 soup = BeautifulSoup(response.text, 'html.parser')
                 books = soup.findAll('h3')
-                if not books:  # Si aucun livre n'est trouvé, afficher un message
+                if not books:  
                     print("Aucun livre trouvé sur cette page.")
                 else:
                     for book in books:
@@ -105,14 +102,14 @@ def main():
                         book_data = scrape_book_data(link)
                         if book_data:
                             writer.writerow(book_data)
-                     
                             print('Scraped:', book_data[2])
                             
                 break
             
-            except requests.exceptions.RequestException as e:  # Gérer les exceptions de notre bloc
+            except requests.exceptions.RequestException as e: 
                 print(f"Une erreur est survenue lors de l'accès à l'URL: {url}, erreur: {e}")
-                continue  # Reprendre la boucle et redemander à l'utilisateur de choisir une page après l'erreur
-print ('toute la page sélectionnée a été extraite')
+                continue  
+    print ('toute la page sélectionnée a été extraite')
+    
 if __name__ == "__main__":
     main()
