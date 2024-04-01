@@ -57,16 +57,7 @@ Les données seront sauvegardées dans un fichier nommé "book_to_scrape_data.cs
 
 3. Les données de la page sélectionée seront sauvegardées dans un fichier nommé "book_to_scrape_data.csv" dans le répertoire du projet.
 
-4. Une fois que vous avez terminé d'utiliser le script demo.py, vous pouvez désactiver l'environnement virtuel en utilisant la commande suivante :
-
-- Sur Windows :
-  ```
-  deactivate
-  ```
-
-- Sur macOS et Linux :
-  ```
-  source venv/bin/deactivate
+4. Une fois que vous avez terminé d'utiliser le script demo.py, vous pouvez désactiver l'environnement virtuel
 
 ---
 
