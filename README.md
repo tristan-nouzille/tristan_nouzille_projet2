@@ -32,22 +32,7 @@ Ce script Python permet de scraper les données de livres à partir du site "Boo
 
  ```
   pip install -r requirements.txt
-
  ```
-
-
-5. Exécutez le script principal pour scraper les données de livres et les sauvegarder dans un fichier CSV :
-
-   ```
-   python main.py
-   ```
-   Les données seront sauvegardées dans un fichier nommé "book_to_scrape_data.csv" dans le répertoire du projet.
-
-6. Une fois que vous avez terminé d'utiliser le script, vous pouvez désactiver l'environnement virtuel en utilisant la commande suivante :
-
-   ```
-   deactivate
-   ```
 
    
 ## Utilisation
