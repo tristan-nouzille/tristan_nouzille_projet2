@@ -22,58 +22,28 @@ Ce script Python permet de scraper les données de livres à partir du site "Boo
 
 4. Créez un environnement virtuel pour isoler les dépendances (bibliothèque) du projet :
 
- 1) Tout d'abord installez le package virtualenv avec la commande suivante dans votre terminal:
-    ```
-      pip install virtualenv
-    ```
- 2) créez votre environnement virtuel avec :
-    
-    ```
-      virtualenv env
-    ````
-    Avec cette commande un dossier du nom de "env" apparaîtra dans votre projet 
- 
-5. Activez votre environnement, pour pouvoir l'utilisé il faut taper:
-
-  ```
-    source env/Scripts/activate
-  ```
-  Et si vous êtes sur Linux ou autre OS
-    
-   ```
-    source env/bin/activate
-   ```
-  **Remarque :** "Scripts" commence avec un "S" majuscule.
-
-  Quand ce dernier sera activé le nom apparaitra entre parenthèse en début de ligne sur votre terminal.
   Pour plus d'info, allez sur le lien suivant ' https://python-guide-pt-br.readthedocs.io/fr/latest/dev/virtualenvs.html '
 
-## Dépendances
+ ## Dépendances
 
-Ce projet utilise les bibliothèques Python suivantes :
-- `requests` pour effectuer des requêtes HTTP
-- `BeautifulSoup` pour le scraping HTML
+ Ce projet utilise les bibliothèques Python présent dans le fichier requirement.txt.
 
-Assurez-vous d'avoir installé ces bibliothèques en exécutant la commande d'installation des dépendances mentionnée ci-dessus.
-Si ce n'est pas le cas, taper simplement la ligne suivante:
+ Installé ces bibliothèques en exécutant la commande suivante:
 
  ```
- pip install requests
- ```
- et
- ```
- pip install BeautifulSoup
+  pip install -r requirements.txt
+
  ```
 
 
-7. Exécutez le script principal pour scraper les données de livres et les sauvegarder dans un fichier CSV :
+5. Exécutez le script principal pour scraper les données de livres et les sauvegarder dans un fichier CSV :
 
    ```
    python main.py
    ```
    Les données seront sauvegardées dans un fichier nommé "book_to_scrape_data.csv" dans le répertoire du projet.
 
-8. Une fois que vous avez terminé d'utiliser le script, vous pouvez désactiver l'environnement virtuel en utilisant la commande suivante :
+6. Une fois que vous avez terminé d'utiliser le script, vous pouvez désactiver l'environnement virtuel en utilisant la commande suivante :
 
    ```
    deactivate
@@ -89,19 +59,7 @@ Si ce n'est pas le cas, taper simplement la ligne suivante:
  ```
 
 
-Les données seront sauvegardées dans un fichier nommé "book_to_scrape_data.csv" dans le répertoire du projet.
-
-2. Une fois que vous avez terminé d'utiliser le script, vous pouvez désactiver l'environnement virtuel en utilisant la commande suivante :
-
-- Sur Windows :
-  ```
-  deactivate
-  ```
-
-- Sur macOS et Linux :
-  ```
-  source venv/bin/deactivate
-  ```
+Les données seront sauvegardées dans un fichier nommé "book_to_scrape_data.csv" dans le répertoire du projet ainsi qu'un dossier images avec toutes les couvertures des livres.
 
 ## Demo 
 
