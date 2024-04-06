@@ -42,6 +42,7 @@ Ce script Python permet de scraper les données de livres à partir du site "Boo
  ```
   python main.py
  ```
+ et tapez 'main' quand l'application le demandera.
 
 
 Les données seront sauvegardées dans un fichier nommé "book_to_scrape_data.csv" dans le répertoire du projet ainsi qu'un dossier images avec toutes les couvertures des livres.
@@ -52,7 +53,7 @@ Une fois terminé, désactivez l'environnement virtuel.
 1. Pour une démonstration du projet, tapez :
 
 ```
- python demo.py
+ demo 
 ```
 2. Choisissez la page que vous voulez scrapper depuis votre terminal (1, ...., 50)
 
