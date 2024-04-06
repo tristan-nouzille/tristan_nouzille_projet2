@@ -45,6 +45,7 @@ Ce script Python permet de scraper les données de livres à partir du site "Boo
 
 
 Les données seront sauvegardées dans un fichier nommé "book_to_scrape_data.csv" dans le répertoire du projet ainsi qu'un dossier images avec toutes les couvertures des livres.
+Une fois terminé, désactivez l'environnement virtuel.
 
 ## Demo 
 

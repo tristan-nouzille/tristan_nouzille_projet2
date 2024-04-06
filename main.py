@@ -68,7 +68,39 @@ def scrape_book_data(link):
         print(f"Une erreur est survenue lors du scraping des données: {e}")
         return None
 
+def demo():
+    while True:
+        with open('book_to_scrape_data.csv', 'w', newline='', encoding='utf-8') as file:
+            writer = csv.writer(file)
+            writer.writerow(['product_page_url', 'universal_product_code', 'title', 'price_including_tax',
+                             'price_excluding_tax', 'number_available', 'product_description', 'category',
+                             'review_rating', 'image_url', 'image_path'])
 
+            page_number = int(input("Entrez le numéro de la page à scraper : "))  
+            url = f'https://books.toscrape.com/catalogue/page-{page_number}.html'
+
+            try:
+                response = requests.get(url)
+                response.raise_for_status()  
+                soup = BeautifulSoup(response.text, 'html.parser')
+                books = soup.findAll('h3')
+                if not books:  
+                    print("Aucun livre trouvé sur cette page.")
+                else:
+                    for book in books:
+                        a = book.find('a')
+                        link = 'https://books.toscrape.com/catalogue/' + a['href']
+                        book_data = scrape_book_data(link)
+                        if book_data:
+                            writer.writerow(book_data)
+                            print('Scraped:', book_data[2])
+                            
+                break
+            
+            except requests.exceptions.RequestException as e: 
+                print(f"Une erreur est survenue lors de l'accès à l'URL: {url}, erreur: {e}")
+                continue  
+    print ('toute la page sélectionnée a été extraite')
 
 def main():
     create_directory('images')
@@ -111,4 +143,11 @@ def main():
         print("Scraping terminé.")
 
 if __name__ == "__main__":
-    main()
+    choice = input("Choisissez 'demo' pour exécuter la démonstration ou 'main' pour exécuter la fonction principale : ")
+    if choice.lower() == "demo":
+        demo()
+    elif choice.lower() == "main":
+        main()
+    else:
+        print("Choix invalide.")
+
